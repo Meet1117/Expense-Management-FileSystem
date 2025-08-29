@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hisaab - <%= filename %> | Khaatabook</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.4s ease-out',
+                        'fade-up': 'fadeUp 0.6s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 }
+                        },
+                        fadeUp: {
+                            '0%': { transform: 'translateY(40px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .theme-transition * {
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        
+        .btn-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-2px);
+        }
+        
+        .theme-toggle {
+            transition: transform 0.4s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(25deg);
+        }
+        
+        .content-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .dark .content-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+        }
+        
+        .filename-badge {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .dark .filename-badge {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        
+        .hisaab-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .hisaab-content p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-secondary-900 dark:to-secondary-800 min-h-screen theme-transition">
+    
+    <!-- Navbar -->
+        <nav class="flex px-6 md:px-10 justify-between items-center py-5 bg-white dark:bg-secondary-800 nav-shadow sticky top-0 z-10">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary-500 p-2 rounded-lg">
+                    <i class="ri-pie-chart-2-line text-white text-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold tracking-tight text-secondary-900 dark:text-white">Khaatabook</h3>
+            </div>
+            <div class="flex gap-5 items-center">
+                <a href="/" class="text-secondary-600 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium">Home</a>
+                <a href="/create" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg btn-hover flex items-center gap-2 shadow-md hover:shadow-lg transition-all">
+                    <i class="ri-add-line"></i> New Record
+                </a>
+                <button id="themeToggle" class="theme-toggle bg-secondary-100 dark:bg-secondary-700 p-2 rounded-full text-secondary-700 dark:text-yellow-300">
+                    <i class="ri-sun-line text-lg"></i>
+                </button>
+            </div>
+        </nav>
+    
+    <main class="w-full max-w-5xl mx-auto pb-20">
+        <!-- Hisaab Content -->
+        <section class="px-6 md:px-10 py-8 animate-fade-in">
+            <div class="mb-8 animate-fade-up">
+                <div class="flex flex-wrap items-center gap-4 mb-3">
+                    <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
+                        <i class="ri-file-text-line text-blue-500 dark:text-blue-400 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-secondary-900 dark:text-white">Hisaab Details</h1>
+                        <div class="flex flex-wrap items-center gap-3 mt-2">
+                            <span class="filename-badge text-white px-3 py-1 rounded-full text-sm font-medium">
+                                <%= filename.replace('.txt', '') %>
+                            </span>
+                            <span class="text-secondary-500 dark:text-secondary-400 text-sm">
+                                <i class="ri-time-line"></i> Last updated: <%= new Date().toLocaleDateString() %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="content-card rounded-xl p-6 md:p-8 shadow-sm animate-slide-in">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-secondary-900 dark:text-white mb-4"><%= title %></h2>
+                    <div class="h-px bg-secondary-200 dark:bg-secondary-700 mb-6"></div>
+                </div>
+                
+                <div class="hisaab-content text-secondary-800 dark:text-secondary-200 whitespace-pre-line">
+                    <%= content %>
+                </div>
+                
+                <div class="mt-10 flex flex-wrap gap-4">
+                    <a href="/edit/<%= filename %>" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg btn-hover shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                        <i class="ri-edit-line"></i> Edit Hisaab
+                    </a>
+                    
+                    <a href="/" class="bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-200 px-6 py-3 rounded-lg btn-hover transition-all flex items-center gap-2">
+                        <i class="ri-arrow-go-back-line"></i> Back to Home
+                    </a>
+                    
+                    <a href="/delete/<%= filename %>" class="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-800/50 text-red-500 dark:text-red-400 px-6 py-3 rounded-lg btn-hover transition-all flex items-center gap-2 ml-auto">
+                        <i class="ri-delete-bin-line"></i> Delete Hisaab
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-secondary-500 dark:text-secondary-400 text-sm px-6 animate-fade-in">
+            <p>© 2023 Khaatabook. All rights reserved.</p>
+            <p class="mt-2">Detailed expense tracking made simple</p>
+        </footer>
+    </main>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or respect OS preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.documentElement.classList.add('dark');
+            themeIcon.classList.remove('ri-sun-line');
+            themeIcon.classList.add('ri-moon-line');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeIcon.classList.remove('ri-moon-line');
+            themeIcon.classList.add('ri-sun-line');
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            
+            if (isDark) {
+                themeIcon.classList.remove('ri-sun-line');
+                themeIcon.classList.add('ri-moon-line');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.remove('ri-moon-line');
+                themeIcon.classList.add('ri-sun-line');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Add some interactivity to the content
+        const contentSections = document.querySelectorAll('.hisaab-content p');
+        contentSections.forEach(section => {
+            section.addEventListener('click', function() {
+                this.classList.toggle('bg-blue-50');
+                this.classList.toggle('dark:bg-blue-900/20');
+            });
+        });
+        
+        // Format amounts in the content (example)
+        document.querySelectorAll('.hisaab-content').forEach(el => {
+            const content = el.innerHTML;
+            // Simple regex to find amounts - in a real app you'd parse the actual content
+            const formattedContent = content.replace(/(₹|\$)?\s*(\d+)/g, '<span class="font-bold text-green-600 dark:text-green-400">$1$2</span>');
+            el.innerHTML = formattedContent;
+        });
+    </script>
+</body>
+
+</html>
